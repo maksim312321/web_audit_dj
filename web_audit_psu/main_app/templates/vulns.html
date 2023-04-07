@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    <table class="table">
+        <tr>
+            <th>Идентификатор</th>
+            <th>Уровень угрозы CVSS</th>
+            <th>Вектор CVSS</th>
+            <th>Описание</th>
+        </tr>
+        {% for v in vulns %}
+        <tr>
+            <td>{{ v.cve }}</td>
+            <td>{{ v.cvss_score }}</td>
+            <td>{{ v.cvss_vector }}</td>
+            <td>{{ v.desc }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

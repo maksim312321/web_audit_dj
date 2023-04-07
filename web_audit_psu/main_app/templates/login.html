@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>LOGIN</h1>
+    <hr>
+    {% if form.errors %}
+        <p>{{ form.errors.error }}</p>
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        {% for f in form %}
+        <div class="form-group">
+            {{ f }}
+        </div>
+        {% endfor %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}

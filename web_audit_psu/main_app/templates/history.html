@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>История сканирования</h1>
+    <div class="row">
+        <table class="table col">
+            <tr>
+                <th>Хост</th>
+                <th>Дата</th>
+                <th>Кол-во NIST</th>
+                <th>Кол-во БДУ</th>
+            </tr>
+            {% for h in history %}
+            <tr>
+                <td>{{ h.host.ip }}</td>
+                <td>{{ h.scan_date }}</td>
+                <td>{{ h.nist_count }}</td>
+                <td>{{ h.bdu_count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div class="col">
+            <canvas id="myChart-bdu"></canvas>
+            <canvas id="myChart-nist"></canvas>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <div id="json_data" style="display: none">{{ history_json }}</div>
+        <script>
+            const onload = function () {
+                const history_data = JSON.parse(document.querySelector('#json_data').innerText);
+
+                  const ctx_nist = document.getElementById('myChart-nist');
+                  const ctx_bdu = document.getElementById('myChart-bdu');
+
+                  const labels = history_data.map(item => item.scan_date);
+                    const data_nist = {
+                      labels: labels,
+                      datasets: [{
+                        label: 'NIST',
+                        data: history_data.map(item => item.nist_count),
+                        fill: false,
+                        borderColor: 'rgb(111, 111, 111)',
+                        tension: 0.1
+                      }
+                      ]
+                    };
+
+                    const data_bdu = {
+                      labels: labels,
+                      datasets: [{
+                        label: 'BDU',
+                        data: history_data.map(item => item.bdu_count),
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                      }]
+                    };
+
+                  new Chart(ctx_nist, {
+                      type: 'line',
+                      data: data_nist,
+                  });
+                  new Chart(ctx_bdu, {
+                      type: 'line',
+                      data: data_bdu,
+                  });
+            }
+
+            document.addEventListener("DOMContentLoaded", onload);
+        </script>
+    </div>
+{% endblock %}

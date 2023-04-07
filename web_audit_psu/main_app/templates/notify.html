@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="mt-3">Добавить уведомления</h1>
+    <form action="{% url 'add_notify' %}" method="post">
+        {% csrf_token %}
+        <input class="form-group" name="mail" placeholder="Ваша почта">
+        <input class="form-group" name="host" placeholder="Интересующий адрес">
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+    <hr>
+    <h2 class="mt-3">Активные уведомления</h2>
+    <div>
+        <form action="{% url 'delete_notify' %}" method="post">
+            {% csrf_token %}
+            {% for n in notifies %}
+            <div class="">
+                <span class="p-2">{{ n.host.ip }}:{{ n.host.port }}</span> / <span class="p-2">{{ n.mail }}</span>
+                <input type="checkbox" class="form-check-input" name="{{ n.pk }}">
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-danger mt-3">Удалить</button>
+        </form>
+    </div>
+
+<!--    <form action="{% url 'delete_notify' %}" method="post">-->
+<!--        {% csrf_token %}-->
+<!--        <input class="form-group" name="mail" placeholder="Ваша почта">-->
+<!--        <input class="form-group" name="host" placeholder="Интересующий адрес">-->
+<!--        <button type="submit" class="btn btn-primary">Добавить</button>-->
+<!--    </form>-->
+{% endblock %}

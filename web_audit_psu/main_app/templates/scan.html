@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Сканирование новых хостов</h1>
+    <form action="{% url 'scan_host' %}" method="post" class="mt-3">
+        {% csrf_token %}
+        <input class="form-group" name="host" placeholder="IP адрес">
+        <button type="submit" class="btn btn-primary">Поиск</button>
+    </form>
+{% endblock %}

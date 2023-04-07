@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Список хостов</h1>
+    <table class="table">
+        <tr>
+            <th>Хост</th>
+            <th>Протокол</th>
+            <th>Порт</th>
+            <th>Дата сканирования</th>
+            <th>Название приложения</th>
+            <th>Версия приложения</th>
+            <th>Уязвимости БДУ ФСТЭК</th>
+            <th>Уязвимости NIST</th>
+        </tr>
+        {% for h in hosts %}
+        <tr>
+            <td>{{ h.ip }}</td>
+            <td>{{ h.protocol }}</td>
+            <td>{{ h.port }}</td>
+            <td>{{ h.last_scan_date }}</td>
+            <td>{{ h.soft_name }}</td>
+            <td>{{ h.soft_version }}</td>
+            <td>
+                <a href="/{{h.pk}}/bdu">Найдено: {{ h.bdu_vulns_count }}</a>
+            </td>
+            <td>
+                <a href="/{{h.pk}}/nist">Найдено: {{ h.nist_vulns_count }}</a>
+            </td>
+            <td><a href="/history/{{h.pk}}">История сканирований</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
