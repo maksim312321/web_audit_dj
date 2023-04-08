@@ -2,6 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout, login, authenticate
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView
 import json
 
@@ -102,3 +103,12 @@ def hosts(request):
 
     ctx = {'hosts': hosts}
     return render(request, 'hosts.html', ctx)
+
+@csrf_exempt
+def plan_scan(request):
+    if request.body:
+        host = json.loads(request.body)
+        nmap_scan(host)
+        return HttpResponse('Ready')
+    else:
+        return HttpResponse('error: not post request method')

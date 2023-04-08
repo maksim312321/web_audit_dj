@@ -208,11 +208,3 @@ def nmap_scan(host):
     nm = nmap.PortScanner()
     scan_raw_result = nm.scan(hosts=host, arguments='-v -n -A')
     save_scan_result(scan_raw_result)
-
-    # PeriodicTask.objects.create(
-    #     name='Scan Host {}'.format(host),
-    #     task='nmap_scan',
-    #     interval=IntervalSchedule.objects.get(every=2, period=IntervalSchedule.MINUTES),
-    #     args=json.dumps(host),
-    #     start_time=timezone.now(),
-    # )
