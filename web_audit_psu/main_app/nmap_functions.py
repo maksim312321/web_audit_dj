@@ -206,5 +206,12 @@ def insert_nmap_to_path():
 def nmap_scan(host):
     insert_nmap_to_path()
     nm = nmap.PortScanner()
-    scan_raw_result = nm.scan(hosts=host, arguments='-v -n -A')
+    if (len(host.split(':')) > 1):
+        port = host.split(':')[1]
+        arg = f'-v -n -A -p {port}'
+        host = host.split(':')[0]
+    else:
+        arg = '-v -n -A'
+    scan_raw_result = nm.scan(hosts=host, arguments=arg)
+    print(nm.command_line())
     save_scan_result(scan_raw_result)
