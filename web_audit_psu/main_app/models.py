@@ -41,3 +41,7 @@ class History(models.Model):
     nist_count = models.IntegerField()
     bdu_count = models.IntegerField()
 
+class Plan(models.Model):
+    host = models.ForeignKey(Hosts, on_delete=models.CASCADE)
+    plan_value = models.CharField(max_length=100)
+

@@ -104,6 +104,36 @@ def hosts(request):
     ctx = {'hosts': hosts}
     return render(request, 'hosts.html', ctx)
 
+def plan(request):
+    hosts = Hosts.objects.all()
+
+    for h in hosts:
+        if (len(Plan.objects.filter(host=h)) == 0):
+            h.plan = ''
+        else:
+            h.plan = Plan.objects.filter(host=h)[0].plan_value
+    ctx = {'hosts': hosts}
+
+    return render(request, 'plan.html', ctx)
+
+def set_plan(request):
+    data = json.loads(request.POST['plan_type'])
+    host = Hosts.objects.get(pk=data[0])
+    if (len(Plan.objects.filter(host=host)) > 0):
+        p = Plan.objects.filter(host=host)[0]
+        p.plan_value = data[1]
+        p.save()
+    else:
+        p = Plan(host=host, plan_value=data[1])
+        p.save()
+
+    # 0 8 * * * /usr/bin /python3 /home/scan/myprojectdir/main_app/update_nist.py
+    # 0 8 * * * /usr/bin/python3 /home/scan/myprojectdir/main_app/update_bdu_fstek.py
+
+    for p in Plan.objects.all():
+        print(f'{p.plan_value} /usr/bin/python3 /home/scan/myprojectdir/main_app/plan_scan.py {p.host.ip}:{p.host.port}')
+    return plan(request)
+
 @csrf_exempt
 def plan_scan(request):
     if request.body:

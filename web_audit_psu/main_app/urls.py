@@ -16,4 +16,6 @@ urlpatterns = [
     path('delete_notify/', delete_notify, name='delete_notify'),
     path('history/<int:id>/', history, name='history'),
     path('plan_scan/', plan_scan, name='plan_scan'),
+    path('plan/', plan, name='plan'),
+    path('set_plan/', set_plan, name='set_plan'),
 ]
